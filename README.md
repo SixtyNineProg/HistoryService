@@ -5,7 +5,7 @@ Microservice for working with history
 
 ## REST-services:
         
-#### POST [http://localhost:9000/historyservice/history](http://localhost:9000/demo/history)
+#### POST [http://localhost:9000/historyservice/history](http://localhost:9000/historyservice/history)
 #### registration of a history
 
         Example of request body:
@@ -17,7 +17,7 @@ Microservice for working with history
 
 ---
 
-#### GET [http://localhost:9000/demo/history?pagesize={pagesize}&pagenumber={pagenumber}](http://localhost:9000/demo/history?pagesize={pagesize}&pagenumber={pagenumber})
+#### GET [http://localhost:9000/historyservice/history?pagesize={pagesize}&pagenumber={pagenumber}](http://localhost:9000/historyservice/history?pagesize={pagesize}&pagenumber={pagenumber})
 #### receiving history
 
         where:
@@ -26,7 +26,7 @@ Microservice for working with history
 
 ---
 
-#### GET [http://localhost:9000/demo/history/{historyId}](http://localhost:9000/demo/history/{historyId}})
+#### GET [http://localhost:9000/historyservice/history/{historyId}](http://localhost:9000/historyservice/history/{historyId}})
 #### receiving history by id
 
         where:
