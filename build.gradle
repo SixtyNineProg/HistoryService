@@ -29,4 +29,6 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile group: 'com.wesleyhome.jpa', name: 'criteria-query-annotations', version: '1.0.2'
+
 }
