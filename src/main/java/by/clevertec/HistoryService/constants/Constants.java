@@ -5,7 +5,7 @@ public class Constants {
     public static final String ID_PATH_VARIABLE = "/{id}";
         public static final String FILTER_PATH_VARIABLE = "/filter";
     public static final String PATH_GET_ALL = "/getAll";
-    public static final String PATH_UPDATE = "/updateUser";
+    public static final String PATH_UPDATE = "/update";
 
     public static final String PAGESIZE_KEY = "pagesize";
     public static final String PAGESIZE_VALUE = "15";

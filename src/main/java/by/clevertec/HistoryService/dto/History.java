@@ -1,7 +1,9 @@
 package by.clevertec.HistoryService.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 
@@ -9,8 +11,9 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Data
-@Table
 @Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class History {
     @Id
     private String id;

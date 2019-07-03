@@ -61,7 +61,7 @@ public class HistoryController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> getHistory(
+    public ResponseEntity<?> getPageHistory(
             @RequestParam(name = Constants.PAGESIZE_KEY, defaultValue = Constants.PAGESIZE_VALUE, required = false)
                     Integer pageSize,
             @RequestParam(name = Constants.PAGENUMBER_KEY, defaultValue = Constants.PAGENUMBER_VALUE, required = false)

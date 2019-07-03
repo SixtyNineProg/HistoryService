@@ -32,7 +32,7 @@ Microservice for working with history
 
 ---
 
-#### GET [http://localhost:9000/historyservice/history/{historyId}](http://localhost:9000/historyservice/history/{historyId}})
+#### GET [http://localhost:9000/historyservice/history/{historyId}](http://localhost:9000/historyservice/history/{historyId})
 #### receiving history by id
 
         where:
@@ -40,7 +40,7 @@ Microservice for working with history
         
 ---        
         
-#### POST [http://localhost:9000/historyservice/history/filter](http://localhost:9000/historyservice/history/filter})
+#### POST [http://localhost:9000/historyservice/history/filter](http://localhost:9000/historyservice/history/filter)
 #### receiving filtered history
 
         Example of request body:
@@ -53,3 +53,41 @@ Microservice for working with history
           "isWaslStatus": ["true"],
           "isWialonStatus": ["true"]
         }
+
+---
+            
+#### PUT [http://localhost:9000/historyservice/history/update](http://localhost:9000/webapplication/user)
+#### history update
+
+    Example of request body:
+    {
+      "userName": "Tom",
+      "timestamp": "2019-04-30T10:15:39.476Z",
+      "operatingType": "registration",
+      "entityType": "company",
+      "isWaslStatus": true,
+      "isWialonStatus": true,
+      "waslDescription": "description",
+      "wialonDescription": "description",
+      "entityDescription": "description"
+    }
+
+---
+    
+#### DELETE [http://localhost:9000/historyservice/history/{historyId}](http://localhost:9000/historyservice/history/{historyId})
+#### deleting history by id
+
+        where:
+        {userId} - identity number
+
+---
+
+#### GET [http://localhost:9000/historyservice/history/getAll](http://localhost:9000/historyservice/history/getAll)
+#### getting all histories
+
+---       
+
+####Build tool        
+This projec uses such build tool as gradle. 
+Use "gradlew build" to build project.
+Use "gradlew bootRun" to run project. 
