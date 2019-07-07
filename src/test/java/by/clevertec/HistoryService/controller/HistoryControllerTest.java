@@ -17,13 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -238,8 +235,7 @@ public class HistoryControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.content[0].id").value(1))
                 .andExpect(jsonPath("$.content[1].userName").value("Jim"))
-                .andExpect(jsonPath("$.content[2].entityType").value("driver"))
-                .andReturn();
+                .andExpect(jsonPath("$.content[2].entityType").value("driver"));
     }
 
     @Test
@@ -249,5 +245,14 @@ public class HistoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(filterForHistory)))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void BadRequest() throws Exception {
+        String json = objectMapper.writeValueAsString(filterForHistory);
+        Map jsonToMap = objectMapper.readValue(json, Map.class);
+        //System.out.println(jsonToMap.get("userNames"));
+        String names = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonToMap.get("userNames"));
+        //System.out.println(names);
     }
 }

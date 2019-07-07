@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -77,23 +78,31 @@ public class HistoryServiceImpl implements HistoryService {
     public Page<History> findAllWithFilter(Integer pageSize, Integer pageNumber, FilterForHistory filterForHistory) {
         final Pageable pageableRequest = PageRequest.of(pageNumber, pageSize);
 
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = objectMapper.convertValue(filterForHistory, Map.class);
+        map.get("userNames");
+
         Query query = new Query();
-        if (filterForHistory.getUserNames().length != 0) {
+        if (filterForHistory.getUserNames() != null) {
             query.addCriteria(Criteria.where("userName").in((Object[]) filterForHistory.getUserNames()));
         }
         if (filterForHistory.getTimestampFrom() != null && filterForHistory.getTimestampTo() != null) {
             query.addCriteria(Criteria.where("timestamp").gte(filterForHistory.getTimestampFrom()).lte(filterForHistory.getTimestampTo()));
+        } else if (filterForHistory.getTimestampFrom() != null) {
+            query.addCriteria(Criteria.where("timestamp").gte(filterForHistory.getTimestampFrom()));
+        } else if (filterForHistory.getTimestampTo() != null) {
+            query.addCriteria(Criteria.where("timestamp").lte(filterForHistory.getTimestampTo()));
         }
-        if (filterForHistory.getOperatingType().length != 0) {
+        if (filterForHistory.getOperatingType() != null) {
             query.addCriteria(Criteria.where("operatingType").in((Object[]) filterForHistory.getOperatingType()));
         }
-        if (filterForHistory.getEntityType().length != 0) {
+        if (filterForHistory.getEntityType() != null) {
             query.addCriteria(Criteria.where("entityType").in((Object[]) filterForHistory.getEntityType()));
         }
-        if (filterForHistory.getIsWaslStatus().length != 0) {
+        if (filterForHistory.getIsWaslStatus() != null) {
             query.addCriteria(Criteria.where("isWaslStatus").in((Object[]) filterForHistory.getIsWaslStatus()));
         }
-        if (filterForHistory.getIsWialonStatus().length != 0) {
+        if (filterForHistory.getIsWialonStatus() != null) {
             query.addCriteria(Criteria.where("isWialonStatus").in((Object[]) filterForHistory.getIsWialonStatus()));
         }
 

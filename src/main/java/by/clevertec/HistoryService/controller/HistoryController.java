@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +33,8 @@ public class HistoryController {
             @RequestParam(name = Constants.PAGENUMBER_KEY, defaultValue = Constants.PAGENUMBER_VALUE, required = false)
                     Integer pageNumber,
             @RequestBody
-                    FilterForHistory filterForHistory) {
+                    FilterForHistory filterForHistory
+             ) {
         try {
             return ResponseEntity.ok(historyService.findAllWithFilter(pageSize, pageNumber, filterForHistory));
         } catch (Exception e) {
