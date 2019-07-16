@@ -3,7 +3,7 @@ package by.clevertec.HistoryService.constants;
 public class Constants {
     public static final String HISTORY = "/history";
     public static final String ID_PATH_VARIABLE = "/{id}";
-        public static final String FILTER_PATH_VARIABLE = "/filter";
+    public static final String FILTER_PATH_VARIABLE = "/filter";
     public static final String PATH_GET_ALL = "/getAll";
     public static final String PATH_UPDATE = "/update";
 
@@ -19,4 +19,5 @@ public class Constants {
     public static final String HISTORY_RECEIVED = "History with id={} received successful : {}";
     public static final String HISTORY_PAGEABLE = "History pageable received successful : {}";
     public static final String ERROR_PARSING_OF_OBJECT = "can't represent object of class {} in json form for logging: {}";
+    public static final String ERROR_GET_FIELD = "can't get feild of class {} exception: {}";
 }

@@ -6,6 +6,7 @@ import by.clevertec.HistoryService.dto.History;
 import by.clevertec.HistoryService.repository.HistoryRepository;
 import by.clevertec.HistoryService.service.HistoryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -75,16 +76,33 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Page<History> findAllWithFilter(Integer pageSize, Integer pageNumber, FilterForHistory filterForHistory) {
+    public Page<History> findAllWithFilter(Integer pageSize, Integer pageNumber, FilterForHistory filterForHistory) throws IOException {
         final Pageable pageableRequest = PageRequest.of(pageNumber, pageSize);
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = objectMapper.convertValue(filterForHistory, Map.class);
-        map.get("userNames");
-
         Query query = new Query();
+
+        Class filterForHistoryClass = FilterForHistory.class;
+
+        convertFilterForHistoryToMap(filterForHistory).forEach((key, value) ->
+        {
+            if (value != null) {
+                try {
+                    String fieldType = filterForHistoryClass.getDeclaredField(key).getType().toString();
+                    if (fieldType.contains("String")) {
+                        String valueToString = value.toString();
+                        String[] dataStrings = (valueToString.substring(valueToString.indexOf("[") + 1, valueToString.indexOf("]"))).split(",");
+                        query.addCriteria(Criteria.where("userName").in((Object[]) dataStrings));
+                    }
+                } catch (NoSuchFieldException e) {
+                    log.warn(Constants.ERROR_GET_FIELD, filterForHistoryClass.getSimpleName(), e.toString());
+                }
+            }
+        });
+
+/*
         if (filterForHistory.getUserNames() != null) {
             query.addCriteria(Criteria.where("userName").in((Object[]) filterForHistory.getUserNames()));
+            System.out.println(Arrays.toString(filterForHistory.getUserNames()));
         }
         if (filterForHistory.getTimestampFrom() != null && filterForHistory.getTimestampTo() != null) {
             query.addCriteria(Criteria.where("timestamp").gte(filterForHistory.getTimestampFrom()).lte(filterForHistory.getTimestampTo()));
@@ -105,6 +123,7 @@ public class HistoryServiceImpl implements HistoryService {
         if (filterForHistory.getIsWialonStatus() != null) {
             query.addCriteria(Criteria.where("isWialonStatus").in((Object[]) filterForHistory.getIsWialonStatus()));
         }
+*/
 
         query.with(pageableRequest);
 
@@ -120,5 +139,11 @@ public class HistoryServiceImpl implements HistoryService {
             log.warn(Constants.ERROR_PARSING_OF_OBJECT, o.getClass().getSimpleName(), e.toString());
         }
         return json;
+    }
+
+    private Map<String, Object> convertFilterForHistoryToMap(FilterForHistory filterForHistory) throws IOException {
+        return objectMapper.readValue(objectMapper.writeValueAsString(filterForHistory),
+                new TypeReference<LinkedHashMap<String, Object>>() {
+                });
     }
 }

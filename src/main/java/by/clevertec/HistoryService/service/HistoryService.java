@@ -5,6 +5,7 @@ import by.clevertec.HistoryService.dto.History;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,5 @@ public interface HistoryService {
 
     Page<History> getHistory(Integer pageSize, Integer pageNumber);
 
-    Page<History> findAllWithFilter(Integer pageSize, Integer pageNumber, FilterForHistory filterForHistory);
+    Page<History> findAllWithFilter(Integer pageSize, Integer pageNumber, FilterForHistory filterForHistory) throws IOException;
 }

@@ -3,8 +3,10 @@ package by.clevertec.HistoryService.controller;
 import by.clevertec.HistoryService.dto.FilterForHistory;
 import by.clevertec.HistoryService.dto.History;
 import by.clevertec.HistoryService.service.HistoryService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -249,10 +251,38 @@ public class HistoryControllerTest {
 
     @Test
     public void BadRequest() throws Exception {
-        String json = objectMapper.writeValueAsString(filterForHistory);
-        Map jsonToMap = objectMapper.readValue(json, Map.class);
-        //System.out.println(jsonToMap.get("userNames"));
-        String names = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonToMap.get("userNames"));
-        //System.out.println(names);
+
+        FilterForHistory filterForHistory = new FilterForHistory(
+                new String[]{"Jack", "Vlad"},
+                dateForFilterGte,
+                dateForFilterLte,
+                new String[]{"registration", "correct"},
+                new String[]{"company"},
+                new Boolean[]{true},
+                new Boolean[]{true}
+        );
+
+        String str = objectMapper.writeValueAsString(filterForHistory);
+        System.out.println(str);
+        Map<String, Object> map = objectMapper.readValue(str, new TypeReference<LinkedHashMap<String, Object>>() {
+        });
+        String userNames = map.get("userNames").toString();
+        String[] strings = (userNames.substring(userNames.indexOf("[") + 1, userNames.indexOf("]") - 1)).split(",");
+        Class filter = FilterForHistory.class;
+        //System.out.println(filter.getDeclaredField("userNames").getType());
+        //map.forEach((key, value) -> System.out.println(key + "=" + value));
+
+        convertFilterForHistoryToMap(history1).forEach((key, value) -> {
+            System.out.println(key + "=" + value);
+            System.out.println("-----");
+        });
     }
+
+
+    private Map<String, Object> convertFilterForHistoryToMap(History history) throws IOException {
+        return objectMapper.readValue(objectMapper.writeValueAsString(history),
+                new TypeReference<LinkedHashMap<String, Object>>() {
+                });
+    }
+
 }
