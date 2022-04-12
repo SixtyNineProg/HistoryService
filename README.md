@@ -87,7 +87,7 @@ Microservice for working with history
 
 ---       
 
-####Build tool        
+#### Build tool        
 This projec uses such build tool as gradle. 
 Use "gradlew build" to build project.
 Use "gradlew bootRun" to run project. 
